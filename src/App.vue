@@ -1,18 +1,18 @@
 <template>
  <div class="app">
-  <UserCrud/>
+    <router-view></router-view>
+  
  </div>
 
 </template>
 
 <script>
-import UserCrud from './components/UserCrud.vue'
+
+
 
 export default {
   name: 'App',
-  components: {
-    UserCrud
-  }
+  
 }
 </script>
 

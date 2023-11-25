@@ -4,7 +4,10 @@
         <h2>LISTA DE USUARIOS</h2>
     </div>
     <div class="btn_crear">
-        <v-btn color="black">Añadir</v-btn>
+      <RouterLink to="/usuario/create">
+        <v-btn color="black" @click="crearUser">Añadir</v-btn>
+      </RouterLink>
+
     </div>
     <div class="contenido">
    
@@ -53,9 +56,16 @@
           <td>{{  usuario.age }}</td>
           <td>{{  usuario.birth_day }}</td>
           <td>{{  usuario.rolesIds }}</td>
-          <td> <v-btn color="blue">Actualizar</v-btn>
-                <v-btn color="red">Eliminar</v-btn>
-            </td>
+          <td> 
+            <router-link :to="{ path: '/usuario/' + usuario.id + '/edit' }">
+              <v-btn color="blue"> Actualizar</v-btn>
+            </router-link>
+           
+              <v-btn color="red" @click="deleteUsuarioById(usuario.id)">Eliminar</v-btn>
+           
+              
+            
+          </td>
          
         </tr>
       </tbody>
@@ -66,12 +76,29 @@
   
 <script>
 import UserService from '@/service/UserService';
+import axios from 'axios';
 export default{
     name : 'UserCrud',
     data(){
         return{
             usuarios : null
         }
+    },
+    methods:{
+      deleteUsuarioById(usuarioId) {
+      if (confirm('Estas seguro de eliminar este usuario?')) {
+        axios.delete(`http://localhost:8080/v1/usuarios/${usuarioId}`).then(res => {
+          location.reload();
+          console.log(res);
+        }).catch(function (error) {
+          console.log(error);
+        })
+      }
+    },
+    crearUser() {
+      // Redirige a la ruta '/otra-pagina'
+      this.$router.push('/usuario/create');
+    }
     },
     UserService : null,
     created() {
